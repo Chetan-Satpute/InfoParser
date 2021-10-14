@@ -1,0 +1,35 @@
+.App {
+  @apply w-full m-auto max-w-5xl;
+}
+
+h1 {
+  color: snow;
+  font-family: "Acme", sans-serif;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  @apply p-3;
+  text-align: left;
+}
+
+th {
+  @apply font-extrabold;
+  border-bottom: 1px solid white;
+}
+
+tbody {
+  max-height: 10px;
+  overflow: scroll;
+}
+
+.card {
+  @apply p-5 text-white rounded-lg;
+
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 1);
+  background: #212121;
+}
