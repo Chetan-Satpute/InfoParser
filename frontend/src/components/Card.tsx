@@ -13,7 +13,7 @@ const Card: FC<CardProps> = ({ data }) => {
     value = getTable(data.headers, data.rows);
   }
 
-  return <div className="my-5 card">{value}</div>;
+  return <div className="my-5 p-5 text-white rounded-lg card">{value}</div>;
 };
 
 export default Card;

@@ -7,7 +7,7 @@ const App: FC = () => {
   const searchQuery = async (query: string) => {};
 
   return (
-    <div className="App">
+    <div className="w-full m-auto max-w-5xl">
       <h1 className="text-7xl text-center mt-32 mb-3 md:text-8xl">
         Info Parser
       </h1>
