@@ -23,7 +23,7 @@ const getTable = (headers: string[], rows: string[][]) => {
     <thead>
       <tr>
         {headers.map((head) => (
-          <th>{head}</th>
+          <th key={head}>{head}</th>
         ))}
       </tr>
     </thead>
@@ -31,10 +31,10 @@ const getTable = (headers: string[], rows: string[][]) => {
 
   const body = (
     <tbody>
-      {rows.map((row) => (
-        <tr>
+      {rows.map((row, index) => (
+        <tr key={`row-${index}`}>
           {row.map((cell) => (
-            <td>{cell}</td>
+            <td key={`${row}-${cell}`}>{cell}</td>
           ))}
         </tr>
       ))}
