@@ -1,7 +1,6 @@
 env/
-node_modules/
+static/
 __pycache__/
 db.sqlite3
-static/
-
+.env
 

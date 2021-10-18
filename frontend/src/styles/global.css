@@ -13,3 +13,10 @@ body {
   height: 100%;
   background: #121212;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari and Opera */
+    -ms-overflow-style: none;    /* IE and Edge */
+    scrollbar-width: none;       /* Firefox */
+}
+

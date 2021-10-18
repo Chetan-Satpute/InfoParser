@@ -1,50 +1,7 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC } from "react";
 
-interface CardProps {
-  data: string | { headers: string[]; rows: string[][] };
-}
-
-const Card: FC<CardProps> = ({ data }) => {
-  let value: ReactElement<HTMLParagraphElement | HTMLCanvasElement>;
-
-  if (typeof data === "string") {
-    value = <p>{data}</p>;
-  } else {
-    value = getTable(data.headers, data.rows);
-  }
-
-  return <div className="my-5 p-5 text-white rounded-lg card">{value}</div>;
+const Card: FC = ({ children }) => {
+  return <div className="my-5 p-5 text-white rounded-lg card">{children}</div>;
 };
 
 export default Card;
-
-const getTable = (headers: string[], rows: string[][]) => {
-  const head = (
-    <thead>
-      <tr>
-        {headers.map((head) => (
-          <th key={head}>{head}</th>
-        ))}
-      </tr>
-    </thead>
-  );
-
-  const body = (
-    <tbody>
-      {rows.map((row, index) => (
-        <tr key={`row-${index}`}>
-          {row.map((cell) => (
-            <td key={`${row}-${cell}`}>{cell}</td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
-  );
-
-  return (
-    <table>
-      {head}
-      {body}
-    </table>
-  );
-};
