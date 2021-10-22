@@ -3,17 +3,23 @@ import Button from "../components/Button";
 import SearchBox from "../components/SearchBox";
 import Layout from "./Layout";
 import Fuse from "fuse.js";
-import { getTopics } from "../utils/apiRequest";
+import { getData, IPassage, ITopic, newPassage } from "../utils/apiRequest";
 import Loading from "../components/Loading";
+import Passage from "../components/Passage";
+import Card from "../components/Card";
 
 const Topics: FC = () => {
-  const [fuzzyTopics, setFuzzyTopics] = useState<string[]>([]);
-  const [fuse] = useState(new Fuse<string>([]));
   const [loading, setLoading] = useState(true);
+
+  const [fuzzyTopics, setFuzzyTopics] = useState<ITopic[]>([]);
+  const [fuse] = useState(new Fuse<ITopic>([]));
+
+  const [passages, setPassages] = useState<IPassage[]>();
+  const [topic, setTopic] = useState<ITopic>();
 
   useEffect(() => {
     const request = async () => {
-      const topics = (await getTopics()) as string[];
+      const topics = (await getData<{ topics: ITopic[] }>("/topic")).topics;
 
       fuse.setCollection(topics);
       setFuzzyTopics(topics);
@@ -24,7 +30,25 @@ const Topics: FC = () => {
     request();
   }, []);
 
+  const loadPassages = async (topic: ITopic) => {
+    setLoading(true);
+    setTopic(topic);
+
+    const passages = (
+      await getData<{ passages: IPassage[] }>(`/passage/?topic=${topic.title}`)
+    ).passages;
+
+    setPassages(passages);
+    setLoading(false);
+  };
+
+  const reloadPassages = async () => {
+    await loadPassages(topic);
+  };
+
   const fuzzyFind = (query: string) => {
+    setPassages(undefined);
+
     if (query === "") {
       setFuzzyTopics([...fuse.getCollection()]);
     } else {
@@ -35,21 +59,51 @@ const Topics: FC = () => {
 
   return (
     <Layout>
-
       <SearchBox placeholder="Search Topic" liveQuery={fuzzyFind} />
 
       {loading ? (
         <Loading />
       ) : (
-        <ul className="text-white mt-5">
-          {fuzzyTopics.map((topic) => (
-            <li className="m-1" key={topic}>
-              <Button lable={topic} icon="topic" />
-            </li>
-          ))}
-        </ul>
-      )}
+        <>
+          {passages ? (
+            <>
+              {passages.map((passage) => (
+                <Passage
+                  id={passage.id}
+                  content={passage.content}
+                  topic={passage.topic}
+                  reload={reloadPassages}
+                />
+              ))}
 
+              <Card>
+                <Button
+                  lable="New Passage"
+                  icon="view_headline"
+                  onClick={async () => {
+                    setLoading(true);
+                    await newPassage(topic.id);
+                    await reloadPassages();
+                    setLoading(false);
+                  }}
+                />
+              </Card>
+            </>
+          ) : (
+            <ul className="text-white mt-5">
+              {fuzzyTopics.map((topic) => (
+                <li className="m-1" key={topic.title}>
+                  <Button
+                    lable={topic.title}
+                    icon="topic"
+                    onClick={() => loadPassages(topic)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
     </Layout>
   );
 };

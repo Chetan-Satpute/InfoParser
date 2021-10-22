@@ -8,7 +8,8 @@ class TopicSerializer(serializers.ModelSerializer):
         model = Topic
         fields = "__all__"
 
+
 class PassageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passage
-        fileds = "__all__"
+        fields = "__all__"

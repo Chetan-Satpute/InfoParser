@@ -36,6 +36,7 @@ const config = {
     static: {
       directory: path.join(__dirname, "dist"),
     },
+    historyApiFallback: true,
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

@@ -19,7 +19,7 @@ const SearchBox: FC<SearchBoxProps> = ({ placeholder, search, liveQuery }) => {
   return (
     <form className="w-full flex justify-center" onSubmit={handleSubmit}>
       <input
-        className="rounded-full p-2 px-7 w-full md:w-2/3 text-center focus:outline-none"
+        className="text-gray-800 rounded-full p-2 px-7 w-full md:w-2/3 text-center focus:outline-none"
         placeholder={placeholder}
         value={query}
         onChange={(e) => {

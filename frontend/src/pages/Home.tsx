@@ -1,34 +1,64 @@
-import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import React, { FC, useEffect, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Loading from "../components/Loading";
+import Result, { ResultInterface } from "../components/Result";
 import SearchBox from "../components/SearchBox";
+import { getData } from "../utils/apiRequest";
 
 const Home: FC = () => {
-  const searchQuery = async (query: string) => {};
+  const [result, setResult] = useState<ResultInterface>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const request = async () => {};
+
+    request();
+  }, []);
+
+  const searchQuery = async (query: string) => {
+    if (query) {
+      setLoading(true);
+
+      const data = await getData<ResultInterface>(`/?q=${query}`);
+
+      setResult(data);
+      setLoading(false);
+    } else {
+      setResult(undefined);
+    }
+  };
 
   return (
-    <div className="w-full m-auto max-w-5xl mt-32">
+    <div className="w-full m-auto max-w-5xl mt-32 p-2">
       <h1 className="text-7xl text-center mb-3 md:text-8xl">Info Parser</h1>
 
       <SearchBox placeholder="Search Query" search={searchQuery} />
 
       <div className="my-10">
-        <Card>
-          Some description of application: Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est
-          laborum.
-        </Card>
-        <Card>
-          <Link to="/explore">
-            <Button lable="Explore Information" icon="storage" />
-          </Link>
-        </Card>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {result ? (
+              <Result data={result} />
+            ) : (
+              <>
+                <Card>Some description of application.</Card>
+                <Card>
+                  <Link to="/explore">
+                    <Button
+                      lable="Explore Information"
+                      icon="storage"
+                      onClick={() => {}}
+                    />
+                  </Link>
+                </Card>
+              </>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

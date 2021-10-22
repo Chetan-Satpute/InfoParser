@@ -7,7 +7,7 @@ import "./styles/App.css";
 const App: FC = () => {
   return (
     <Router>
-      <div className="overflow-auto h-full p-2">
+      <div className="overflow-auto h-full">
         <Switch>
           <Route path="/" exact={true}>
             <Home />

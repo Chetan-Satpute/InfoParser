@@ -3,9 +3,9 @@ import Header from "../components/Header";
 
 const Layout: FC = ({ children }) => {
   return (
-    <div className="overflow-auto h-full p-2 no-scrollbar">
+    <div className="overflow-auto h-full no-scrollbar">
       <Header />
-      <div className="w-full m-auto max-w-5xl mt-14">{children}</div>
+      <div className="w-full m-auto max-w-5xl mt-16 p-2 text-white">{children}</div>
     </div>
   );
 };
