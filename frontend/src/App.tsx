@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import Home from "./pages/Home";
 import Topics from "./pages/Topics";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/App.css";
 
 const App: FC = () => {

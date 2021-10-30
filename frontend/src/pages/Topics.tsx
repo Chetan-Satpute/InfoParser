@@ -1,18 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
 import Button from "../components/Button";
-import SearchBox from "../components/SearchBox";
 import Layout from "./Layout";
-import Fuse from "fuse.js";
 import { getData, IPassage, ITopic, newPassage } from "../utils/apiRequest";
 import Loading from "../components/Loading";
 import Passage from "../components/Passage";
 import Card from "../components/Card";
+import { Link } from "react-router-dom";
 
 const Topics: FC = () => {
   const [loading, setLoading] = useState(true);
 
   const [fuzzyTopics, setFuzzyTopics] = useState<ITopic[]>([]);
-  const [fuse] = useState(new Fuse<ITopic>([]));
 
   const [passages, setPassages] = useState<IPassage[]>();
   const [topic, setTopic] = useState<ITopic>();
@@ -21,9 +19,7 @@ const Topics: FC = () => {
     const request = async () => {
       const topics = (await getData<{ topics: ITopic[] }>("/topic")).topics;
 
-      fuse.setCollection(topics);
       setFuzzyTopics(topics);
-
       setLoading(false);
     };
 
@@ -46,29 +42,23 @@ const Topics: FC = () => {
     await loadPassages(topic);
   };
 
-  const fuzzyFind = (query: string) => {
-    setPassages(undefined);
-
-    if (query === "") {
-      setFuzzyTopics([...fuse.getCollection()]);
-    } else {
-      const fuzzyTopics = fuse.search(query).map(({ item }) => item);
-      setFuzzyTopics(fuzzyTopics);
-    }
-  };
-
   return (
     <Layout>
-      <SearchBox placeholder="Search Topic" liveQuery={fuzzyFind} />
-
       {loading ? (
         <Loading />
       ) : (
         <>
           {passages ? (
             <>
+              <Button
+                lable="Back to Topics"
+                icon="keyboard_arrow_left"
+                onClick={() => setPassages(undefined)}
+              />
+
               {passages.map((passage) => (
                 <Passage
+                  key={passage.id}
                   id={passage.id}
                   content={passage.content}
                   topic={passage.topic}
@@ -90,17 +80,23 @@ const Topics: FC = () => {
               </Card>
             </>
           ) : (
-            <ul className="text-white mt-5">
-              {fuzzyTopics.map((topic) => (
-                <li className="m-1" key={topic.title}>
-                  <Button
-                    lable={topic.title}
-                    icon="topic"
-                    onClick={() => loadPassages(topic)}
-                  />
-                </li>
-              ))}
-            </ul>
+            <>
+              <Link to="/">
+                <Button lable="Back to Home" icon="home" onClick={() => {}} />
+              </Link>
+
+              <ul className="text-white mt-5">
+                {fuzzyTopics.map((topic) => (
+                  <li className="m-1" key={topic.title}>
+                    <Button
+                      lable={topic.title}
+                      icon="topic"
+                      onClick={() => loadPassages(topic)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </>
       )}

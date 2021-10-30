@@ -45,8 +45,40 @@ const Home: FC = () => {
               <Result data={result} />
             ) : (
               <>
-                <Card>Some description of application.</Card>
                 <Card>
+                <div>
+                  <p>
+                    Our system will perform two tasks: topic retrieval and
+                    passage retrieval.
+                  </p>
+                  <p>
+                    Our system will have access to a corpus of text documents.
+                    When presented with a query (a question in English asked by
+                    the user), topic retrieval will first identify which topic
+                    is most relevant to the query. Once the top topic is found,
+                    passages from topic will be processed so that the most
+                    relevant passage to the query can be determined.
+                  </p>
+                  <br />
+                  <p>
+                    How do we find the most relevant topic and passage? To find
+                    the most relevant topic, we’ll use term frequency-inverse
+                    document frequency to rank topics based both on term
+                    frequency for words in the query as well as inverse document
+                    frequency for words in the query.
+                  </p>
+                  <br />
+                  <p>
+                    Once we’ve found the most relevant documents, we’ll use a
+                    combination of inverse document frequency and a query term
+                    density measure to determine most relevant passage.
+                  </p>
+                  </div>
+                </Card>
+                <Card>
+                  View and edit information that AI has access to:
+                  <br />
+                  <br />
                   <Link to="/explore">
                     <Button
                       lable="Explore Information"
